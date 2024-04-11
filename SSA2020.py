@@ -99,6 +99,7 @@ class SSA():
                 self.X[self.idx[i], :] = self.X[self.idx[i], :] + Q * np.ones(
                     (1, self.n_dim))  # Q是服从正态分布的随机数。L表示一个1×d的矩阵
         self.X = np.clip(self.X, self.lb, self.ub)  # 对超过边界的变量进行去除
+        #这里要再次计算y
         self.cal_y(0, self.pNum)
 
     def update_follower(self):
@@ -106,6 +107,7 @@ class SSA():
         for ii in range(self.pop - self.pNum):
             i = ii + self.pNum
             A = np.floor(np.random.rand(1, self.n_dim) * 2) * 2 - 1
+            #根据本轮finder的适应度，得到最好和最差电芯
             best_idx = self.Y[0:self.pNum].index(min(self.Y[0:self.pNum]))
             bestXX = self.X[best_idx, :]
             if i > self.pop/2:
